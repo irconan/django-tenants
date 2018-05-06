@@ -112,11 +112,11 @@ class TenantMixin(models.Model):
                             "the public schema. Current schema is %s."
                             % connection.schema_name)
 
+        super(TenantMixin, self).delete(*args, **kwargs)
+
         if has_schema and schema_exists(self.schema_name) and (self.auto_drop_schema or force_drop):
             cursor = connection.cursor()
             cursor.execute('DROP SCHEMA %s CASCADE' % self.schema_name)
-
-        super(TenantMixin, self).delete(*args, **kwargs)
 
     def create_schema(self, check_if_exists=False, sync_schema=True,
                       verbosity=1):
